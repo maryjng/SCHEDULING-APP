@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block %}
+
+<div class="calendar-box">
+  <div class="boxheader">
+    <div>Monday</div>  
+    <div>Tuesday</div>  
+    <div>Wednesday</div>  
+    <div>Thursday</div>  
+    <div>Friday</div>  
+    <div>Saturday</div>
+    <div>Sunday</div>
+  </div>
+  
+    {% for day in days %}
+    <li>
+     <div class="day-header">{day}</div>
+      <p> 
+        {% for appt in monthappts %}
+          {% if appt.date == day %}
+            {appt}
+          {% endfor %}
+        {% endfor %}
+      </p>
+    </li>
+    {% end for %}
+
+</div>
+
+{% endblock %}
