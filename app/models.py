@@ -7,17 +7,11 @@ class Appointments(db.Model):
     __tablename__='Appointments'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50))
-    appt = db.Column(db.String(100))
-    date = db.Column(db.Date())
-    time = db.Column(db.Time())
+    username = db.Column(db.String(50), nullable=False)
+    appt = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.Date(), nullable=False)
+    time = db.Column(db.Time(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
-
-    def __init__(self, appt, date, time):
-        self.username = username
-        self.appt = appt
-        self.date = date
-        self.time = time
 
     def __repr__(self):
         return f"APPT({self.appt}, {self.date}, {self.time})"
@@ -39,8 +33,3 @@ class Users(UserMixin, db.Model):
 
     def __repr__(self):
         return f"User {self.username}"
-
-    def __init__(self, username, password, email):
-        self.username = username
-        self.password = password
-        self.email = email
