@@ -6,22 +6,46 @@
   <h2 class="title">Register</h2>
   <form method="POST" action="{{ url_for('home.register') }}">
       <div class="form-field">
-        {{ form.username.label }}
-        {{ form.username(size=20) }}
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter Username"
+      />
       </div>
+    
       <div class="form-field">
-        {{ form.email.label }}
-        {{ form.email }}
+      <label for="email">Email address</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+      />
       </div>
+    
       <div class="form-field">
-        {{ form.password.label }}
-        {{ form.password }}
-      </div>
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Password"
+      />
+    </div>
+    
       <div class="form-field">
-        {{ form.repeatpassword.label }}
-        {{ form.repeatpassword }}
+      <label for="repeat_password">Repeat Password</label>
+      <input
+        type="password"
+        id="repeat_password"
+        name="repeat_password"
+        placeholder="Repeat Password"
+      />
       </div>
-      {{ form.submit }}
+    
+      <button type="submit" class="btn btn-primary">Sign Up</button>
   </form>
 </div>
 
