@@ -7,10 +7,6 @@ from datetime import datetime
 
 home = Blueprint('home', __name__, url_prefix='/home')
 
-@login.user_loader
-def user_loader(id):
-    return Users.query.get(id)
-
 @home.route('/')
 def index():
     return render_template('index.html')
