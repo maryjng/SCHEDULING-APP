@@ -23,7 +23,7 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(100))
     password = db.Column(db.String(200))
     email = db.Column(db.String(1000), unique=True, nullable=False)
-    appts = db.relationship('Appointments', backref='users', lazy=True)
+    appts = db.relationship('Appointments', backref='author', lazy=True)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
