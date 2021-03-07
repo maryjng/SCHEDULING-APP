@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, url_for, redirect, session
+from flask import Blueprint, render_template, url_for, redirect, session, request, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from ..forms import LoginForm, RegisterForm, AddForm
+from ..models import Users
 from flask_login import login_required, logout_user, current_user, login_user
-from ..extensions import login
+from ..extensions import login, db
 import calendar
 from datetime import datetime
 
@@ -17,35 +19,39 @@ def index():
 
 @home.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = LoginForm(request.form)
     if form.validate_on_submit():
-        email = request.form['email']
-        user = Users.query.filter_by(email = email).first()
+        username = request.form['username']
+        user = Users.query.filter_by(username=username).first()
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
-            return redirect(url_for('home/agenda'))
+            return redirect(url_for('home.agenda'))
 
     return render_template('login.html', form=form)
 
 @home.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('home/login'))
+    return redirect(url_for('home.login'))
 
 @home.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
+    form = RegisterForm(request.form)
     if form.validate_on_submit():
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+
         user = Users.query.filter_by(email=email).first()
         if user:
             flash("Username is already registered.")
-            return redirect(url_for('home/register'))
+            return redirect(url_for('home.register'))
 
         new_user = Users(username=username, password=generate_password_hash(password), email=email)
         db.session.add(new_user)
         db.session.commit()
         flash("Account registered.")
-        return redirect(url_for('home/login'))
+        return redirect(url_for('home.login'))
 
     return render_template('register.html', form=form)
 
@@ -68,10 +74,10 @@ def add():
 
     form = AddForm()
     if form.validate_on_submit():
-        new_appt = Appointments(appointment=appt, location=location, date=date, time=time)
+        new_appt = Appointments(author=current_user,appointment=appt, location=location, date=date, time=time)
         db.session.add(new_appt)
         db.session.commit()
         flash("Appointment added.")
-        return redirect(url_for('home/agenda'))
+        return redirect(url_for('home.agenda'))
 
     return render_template('add.html', form=form)

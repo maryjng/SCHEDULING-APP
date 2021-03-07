@@ -5,6 +5,7 @@
 <div class="container">
   <h2 class="title">Add Appointment</h2>
   <form class="form-signin" method="POST" action="/{{ url_for('home.add') }}">
+    {{ form.csrf_token }}
     <div class="form-control">
       {{ form.appointment.label }}
       {{ form.appointment(size=20) }}
