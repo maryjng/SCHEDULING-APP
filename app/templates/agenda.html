@@ -1,29 +1,30 @@
 {% extends 'base.html' %}
-{% block %}
+
+{% block content %}
 
 <div class="calendar-box">
   <div class="boxheader">
-    <div>Monday</div>  
-    <div>Tuesday</div>  
-    <div>Wednesday</div>  
-    <div>Thursday</div>  
-    <div>Friday</div>  
+    <div>Monday</div>
+    <div>Tuesday</div>
+    <div>Wednesday</div>
+    <div>Thursday</div>
+    <div>Friday</div>
     <div>Saturday</div>
     <div>Sunday</div>
   </div>
-  
+
     {% for day in days %}
     <li>
      <div class="day-header">{day}</div>
-      <p> 
+      <p>
         {% for appt in monthappts %}
           {% if appt.date == day %}
             {appt}
-          {% endfor %}
+          {% endif %}
         {% endfor %}
       </p>
     </li>
-    {% end for %}
+    {% endfor %}
 
 </div>
 

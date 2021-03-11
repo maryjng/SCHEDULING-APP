@@ -2,7 +2,7 @@ from .. import db
 from flask import Blueprint, render_template, url_for, redirect, session, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..forms import LoginForm, RegisterForm, AddForm
-from ..models import Users
+from ..models import Users, Appointments
 from flask_login import login_required, logout_user, current_user, login_user
 import calendar
 from datetime import datetime
@@ -17,7 +17,7 @@ def index():
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        username = request.form('username')
+        username = request.form.get('username')
         user = Users.query.filter_by(username=username).first()
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
@@ -61,8 +61,9 @@ def agenda():
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
     monthappts = Appointments.query.filter_by(date=m)
+    user = User.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', monthappts=monthappts, days=days)
+    return render_template('agenda.html', monthappts=monthappts, days=days, user=user)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
