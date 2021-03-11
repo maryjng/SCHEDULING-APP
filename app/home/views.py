@@ -1,17 +1,13 @@
+from .. import db
 from flask import Blueprint, render_template, url_for, redirect, session, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..forms import LoginForm, RegisterForm, AddForm
 from ..models import Users
 from flask_login import login_required, logout_user, current_user, login_user
-from ..extensions import login, db
 import calendar
 from datetime import datetime
 
 home = Blueprint('home', __name__, url_prefix='/home')
-
-@login.user_loader
-def user_loader(id):
-    return Users.query.get(id)
 
 @home.route('/')
 def index():
@@ -21,7 +17,7 @@ def index():
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        username = request.form['username']
+        username = request.form('username')
         user = Users.query.filter_by(username=username).first()
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
@@ -38,9 +34,9 @@ def logout():
 def register():
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
+        email = request.form.get('email')
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         user = Users.query.filter_by(email=email).first()
         if user:
@@ -56,7 +52,7 @@ def register():
     return render_template('register.html', form=form)
 
 @home.route('/agenda', methods=['GET'])
-# @login_required
+@login_required
 def agenda():
     x = datetime.today()
     m = x.month
@@ -69,9 +65,8 @@ def agenda():
     return render_template('agenda.html', monthappts=monthappts, days=days)
 
 @home.route('/add', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def add():
-
     form = AddForm()
     if form.validate_on_submit():
         new_appt = Appointments(author=current_user,appointment=appt, location=location, date=date, time=time)
