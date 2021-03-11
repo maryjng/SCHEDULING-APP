@@ -54,16 +54,18 @@ def register():
 @home.route('/agenda', methods=['GET'])
 @login_required
 def agenda():
-    x = datetime.today()
-    m = x.month
-    y = x.year
+    today = datetime.today()
+    y = today.year
+    m = today.month
 
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
-    monthappts = Appointments.query.filter_by(date=m)
-    user = User.query.filter_by(email=current_user.email).first_or_404()
+    # monthappts = Appointments.query.filter_by(date=m)
+    # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', monthappts=monthappts, days=days, user=user)
+    return render_template('agenda.html', today=today, days=days)
+
+    # monthappts=monthappts, days=days, user=user, month=month, year=year
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required

@@ -2,30 +2,24 @@
 
 {% block content %}
 
-<div class="calendar-box">
-  <div class="boxheader">
-    <div>Monday</div>
-    <div>Tuesday</div>
-    <div>Wednesday</div>
-    <div>Thursday</div>
-    <div>Friday</div>
-    <div>Saturday</div>
-    <div>Sunday</div>
-  </div>
+<h1 align="center">{{ today.month }} | {{ today.year }}</h1>
 
-    {% for day in days %}
-    <li>
-     <div class="day-header">{day}</div>
-      <p>
-        {% for appt in monthappts %}
-          {% if appt.date == day %}
-            {appt}
-          {% endif %}
-        {% endfor %}
-      </p>
-    </li>
-    {% endfor %}
+<ul class="weekdays">
+  <li>MONDAY</li>
+  <li>TUESDAY</li>
+  <li>WEDNESDAY</li>
+  <li>THURSDAY</li>
+  <li>FRIDAY</li>
+  <li>SATURDAY</li>
+  <li>SUNDAY</li>
+</ul>
 
-</div>
+
+<ul class="days">
+  {% for day in days %}
+    <li>{{day}}</li>
+  {% endfor %}
+</ul>
+
 
 {% endblock %}

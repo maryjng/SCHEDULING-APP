@@ -9,26 +9,34 @@
  }
  .starter-template {
    padding: 3rem 1.5rem;
-   text-align: center;
  }
 
- .calendar-box {
-   display: grid;
-   grid-template-columns: repeat(7, 30px);
-   text-align: right;
- }
+.weekdays {
+  padding: 10px 0;
+  margin-bottom: 0;
+  font-weight: bold;
+}
 
- .calendar-box div:first-child {
-   grid-column: 1
-     /* make this value 0-6 depending on weekday */
- }
+.weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+}
 
- .day-header {
-   text-align: center;
-   padding: 0 5px;
-   border-bottom: solid black 2px;
-   background-color: pink;
- }
+.days {
+  padding: 10px 0;
+
+}
+
+.days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */
