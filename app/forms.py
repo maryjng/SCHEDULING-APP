@@ -3,6 +3,7 @@ from wtforms import StringField, TextField, SubmitField, DateField, PasswordFiel
 from wtforms.validators import DataRequired, Length
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from wtforms_components import TimeField
+from wtforms.fields.html5 import DateField
 import email_validator
 
 class LoginForm(FlaskForm):
@@ -23,7 +24,7 @@ class RegisterForm(FlaskForm):
 class AddForm(FlaskForm):
     appointment = StringField('Appointment', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
-    date = DateField('Date', validators=[DataRequired()])
+    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
 
     submit = SubmitField('Create Appointment')

@@ -18,6 +18,17 @@
 <ul class="days">
   {% for day in days %}
     <li>{{day}}</li>
+
+    {% for appt in monthappts %}
+      {% if appt == day %}
+        <div>{{ appt.appointment }}
+              {{ appt.location }}
+              {{ appt.date }}
+              {{ appt.time }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
   {% endfor %}
 </ul>
 

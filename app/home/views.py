@@ -6,6 +6,7 @@ from ..models import Users, Appointments
 from flask_login import login_required, logout_user, current_user, login_user
 import calendar
 from datetime import datetime
+from sqlalchemy import extract
 
 home = Blueprint('home', __name__, url_prefix='/home')
 
@@ -55,27 +56,30 @@ def register():
 @login_required
 def agenda():
     today = datetime.today()
-    y = today.year
-    m = today.month
+    y, m = today.year, today.month
 
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
-    # monthappts = Appointments.query.filter_by(date=m)
+    monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
     # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', today=today, days=days)
-
-    # monthappts=monthappts, days=days, user=user, month=month, year=year
+    return render_template('agenda.html', today=today, days=days, monthappts=monthappts)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
 def add():
-    form = AddForm()
+    form = AddForm(request.form)
     if form.validate_on_submit():
-        new_appt = Appointments(author=current_user,appointment=appt, location=location, date=date, time=time)
+        appt = request.form.get('appointment')
+        location = request.form.get('location')
+        date = request.form.get('date')
+        time = request.form.get('time')
+
+        new_appt = Appointments(author=current_user, appt=appt, location=location, date=date, time=time)
         db.session.add(new_appt)
         db.session.commit()
         flash("Appointment added.")
+
         return redirect(url_for('home.agenda'))
 
     return render_template('add.html', form=form)

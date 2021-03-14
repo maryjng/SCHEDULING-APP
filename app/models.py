@@ -9,6 +9,7 @@ class Appointments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50))
     appt = db.Column(db.String(100))
+    location = db.Column(db.String(400))
     date = db.Column(db.Date())
     time = db.Column(db.Time())
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
