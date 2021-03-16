@@ -75,7 +75,9 @@ def add():
         date = request.form.get('date')
         time = request.form.get('time')
 
-        new_appt = Appointments(author=current_user, appt=appt, location=location, date=date, time=time)
+        conv_date = datetime.strptime(date, "%Y-%m-%d").date()
+
+        new_appt = Appointments(author=current_user, appt=appt, location=location, date=conv_date, time=time)
         db.session.add(new_appt)
         db.session.commit()
         flash("Appointment added.")
