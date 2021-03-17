@@ -65,6 +65,19 @@ def agenda():
 
     return render_template('agenda.html', today=today, days=days, monthappts=monthappts)
 
+@home.route('/agenda/<year>/<month>', methods=['GET'])
+@login_required
+def agenda(year, month):
+    y, m = year, month
+
+    c = calendar.TextCalendar(calendar.MONDAY)
+    days = c.itermonthdays(y,m)
+    monthdiff = date.timedelta(month=1)
+#     monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
+#     # user = Users.query.filter_by(email=current_user.email).first_or_404()
+
+    return render_template('agenda.html', days=days, monthdiff=monthdiff)
+
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
 def add():
