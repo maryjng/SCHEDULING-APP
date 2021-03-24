@@ -5,7 +5,7 @@ from ..forms import LoginForm, RegisterForm, AddForm
 from ..models import Users, Appointments
 from flask_login import login_required, logout_user, current_user, login_user
 import calendar
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from sqlalchemy import extract
 
 home = Blueprint('home', __name__, url_prefix='/home')
@@ -55,28 +55,43 @@ def register():
 @home.route('/agenda', methods=['GET'])
 @login_required
 def agenda():
-    today = datetime.today()
-    y, m = today.year, today.month
 
-    c = calendar.TextCalendar(calendar.MONDAY)
-    days = c.itermonthdays(y,m)
-    monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
-    # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', today=today, days=days, monthappts=monthappts)
 
-@home.route('/agenda/<year>/<month>', methods=['GET'])
+    # monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
+    # # user = Users.query.filter_by(email=current_user.email).first_or_404()
+    #
+    # return render_template('agenda.html', today=today, days=days, monthappts=monthappts)
+
+def prev_month_year(year: int, month: int):
+    prev_month_date = date(year, month, 1) - timedelta(days=2)
+    return prev_month_date.month, prev_month_date.year
+
+def next_month_year(year: int, month: int):
+    last_day_of_month = calendar.monthrange(year, month)[1]
+    next_month_date = date(year, month, last_day_of_month) + timedelta(days=2)
+    return next_month_date.month, next_month_date.year
+
+@home.route('/agenda/<year>/<month>', methods=['GET', 'POST'])
 @login_required
-def agenda(year, month):
+def agenda(year: int = None, month: int = None):
     y, m = year, month
+    today = datetime.today()
+    year, month = today.year, today.month
+
+    if y == None or x == None:
+        return redirect(url_for('home.agenda/<year>/<month>'))
+
+    prev_month, prev_year = prev_month_year(y, m)
+    next_month, next_year = next_month_year(y, m)
 
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
-    monthdiff = date.timedelta(month=1)
+
 #     monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
 #     # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', days=days, monthdiff=monthdiff)
+    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
