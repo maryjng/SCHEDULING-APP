@@ -52,17 +52,6 @@ def register():
 
     return render_template('register.html', form=form)
 
-@home.route('/agenda', methods=['GET'])
-@login_required
-def agenda():
-
-
-
-    # monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
-    # # user = Users.query.filter_by(email=current_user.email).first_or_404()
-    #
-    # return render_template('agenda.html', today=today, days=days, monthappts=monthappts)
-
 def prev_month_year(year: int, month: int):
     prev_month_date = date(year, month, 1) - timedelta(days=2)
     return prev_month_date.month, prev_month_date.year
@@ -72,15 +61,19 @@ def next_month_year(year: int, month: int):
     next_month_date = date(year, month, last_day_of_month) + timedelta(days=2)
     return next_month_date.month, next_month_date.year
 
-@home.route('/agenda/<year>/<month>', methods=['GET', 'POST'])
+
+@home.route('/agenda', defaults={'year': None, 'month': None})
+@home.route('/agenda/<year>/<month>')
 @login_required
-def agenda(year: int = None, month: int = None):
+def agenda(year:int, month:int):
+
     y, m = year, month
+
     today = datetime.today()
     year, month = today.year, today.month
 
-    if y == None or x == None:
-        return redirect(url_for('home.agenda/<year>/<month>'))
+    if y == None or m == None:
+        return redirect(url_for('home.agenda', year=year, month=month))
 
     prev_month, prev_year = prev_month_year(y, m)
     next_month, next_year = next_month_year(y, m)
@@ -91,7 +84,7 @@ def agenda(year: int = None, month: int = None):
 #     monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
 #     # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year)
+    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
