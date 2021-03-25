@@ -26,5 +26,7 @@ def create_app():
 
     from .home.views import home
     app.register_blueprint(home)
+    from .main.views import main
+    app.register_blueprint(main)
 
     return app

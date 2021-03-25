@@ -4,11 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from ..forms import LoginForm, RegisterForm, AddForm
 from ..models import Users, Appointments
 from flask_login import login_required, logout_user, current_user, login_user
-import calendar
 from datetime import datetime, date, timedelta
-from sqlalchemy import extract
+import calendar
 
-home = Blueprint('home', __name__, url_prefix='/home')
+home = Blueprint('home', __name__, url_prefix='/home', template_folder='templates/home')
 
 @home.route('/')
 def index():
@@ -95,10 +94,12 @@ def add():
         location = request.form.get('location')
         date = request.form.get('date')
         time = request.form.get('time')
+        username = current_user
 
         conv_date = datetime.strptime(date, "%Y-%m-%d").date()
+        conv_time = datetime.strptime(time, "%H:%M").time()
 
-        new_appt = Appointments(author=current_user, appt=appt, location=location, date=conv_date, time=time)
+        new_appt = Appointments(username=username, appt=appt, location=location, date=conv_date, time=conv_time)
         db.session.add(new_appt)
         db.session.commit()
         flash("Appointment added.")
