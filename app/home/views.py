@@ -67,7 +67,7 @@ def next_month_year(year: int, month: int):
 @login_required
 def agenda(year:int, month:int):
 
-    y, m = year, month
+    y, m = int(year), int(month)
 
     today = datetime.today()
     year, month = today.year, today.month
@@ -84,7 +84,7 @@ def agenda(year:int, month:int):
 #     monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
 #     # user = Users.query.filter_by(email=current_user.email).first_or_404()
 
-    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today)
+    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required

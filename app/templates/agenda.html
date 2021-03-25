@@ -4,7 +4,7 @@
 
 <h1>
   <a class="nav-link" href="{{url_for('home.agenda', year=prev_year, month=prev_month)}}">Previous Month</a>
-  {{ today.month }} | {{ today.year }}
+  {{ month }} | {{ year }}
   <a class="nav-link" href="{{url_for('home.agenda', year=next_year, month=next_month)}}">Next Month</a>
 </h1>
 
