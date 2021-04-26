@@ -14,12 +14,6 @@ class Appointments(db.Model):
     time = db.Column(db.Time())
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
 
-    # def __init__(self, appt, date, time):
-    #     self.username = username
-    #     self.appt = appt
-    #     self.date = date
-    #     self.time = time
-
     def __repr__(self):
         return f"APPT({self.appt}, {self.date}, {self.time})"
 

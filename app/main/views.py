@@ -1,7 +1,7 @@
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 
-main = Blueprint('main', __name__, template_folder='templates/main')
+main = Blueprint('main', __name__, url_prefix='/main', template_folder='templates/main')
 
 @main.route('/')
 @main.route('/index')

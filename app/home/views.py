@@ -5,6 +5,7 @@ from ..forms import LoginForm, RegisterForm, AddForm
 from ..models import Users, Appointments
 from flask_login import login_required, logout_user, current_user, login_user
 from datetime import datetime, date, timedelta
+from sqlalchemy import extract
 import calendar
 
 home = Blueprint('home', __name__, url_prefix='/home', template_folder='templates/home')
@@ -21,7 +22,9 @@ def login():
         user = Users.query.filter_by(username=username).first()
         if user is not None and user.check_password(request.form['password']):
             login_user(user)
-            return redirect(url_for('home.agenda'))
+            today = datetime.today()
+            year, month = today.year, today.month
+            return redirect(url_for('home.agenda', year=year, month=month))
 
     return render_template('login.html', form=form)
 
@@ -71,8 +74,8 @@ def agenda(year:int, month:int):
     today = datetime.today()
     year, month = today.year, today.month
 
-    if y == None or m == None:
-        return redirect(url_for('home.agenda', year=year, month=month))
+    # if y == None or m == None:
+    #     return redirect(url_for('home.agenda', year=year, month=month))
 
     prev_month, prev_year = prev_month_year(y, m)
     next_month, next_year = next_month_year(y, m)
@@ -96,8 +99,8 @@ def add():
         time = request.form.get('time')
         username = current_user
 
-        conv_date = datetime.strptime(date, "%Y-%m-%d").date()
-        conv_time = datetime.strptime(time, "%H:%M").time()
+        conv_date = str(date)
+        conv_time = str(time)
 
         new_appt = Appointments(username=username, appt=appt, location=location, date=conv_date, time=conv_time)
         db.session.add(new_appt)
