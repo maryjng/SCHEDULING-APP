@@ -24,7 +24,10 @@ class RegisterForm(FlaskForm):
 class AddForm(FlaskForm):
     appointment = StringField('Appointment', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
-    date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
 
     submit = SubmitField('Create Appointment')
+
+format='%Y-%m-%d',
+format='%H:%M'

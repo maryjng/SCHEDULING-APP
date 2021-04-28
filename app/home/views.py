@@ -63,11 +63,10 @@ def next_month_year(year: int, month: int):
     next_month_date = date(year, month, last_day_of_month) + timedelta(days=2)
     return next_month_date.month, next_month_date.year
 
-
-@home.route('/agenda', defaults={'year': None, 'month': None})
+@home.route('/agenda')
 @home.route('/agenda/<year>/<month>')
 @login_required
-def agenda(year:int, month:int):
+def agenda(year='2021', month='6'):
 
     y, m = int(year), int(month)
 
@@ -99,10 +98,7 @@ def add():
         time = request.form.get('time')
         username = current_user
 
-        conv_date = str(date)
-        conv_time = str(time)
-
-        new_appt = Appointments(username=username, appt=appt, location=location, date=conv_date, time=conv_time)
+        new_appt = Appointments(username=username, appt=appt, location=location, date=date, time=time)
         db.session.add(new_appt)
         db.session.commit()
         flash("Appointment added.")
