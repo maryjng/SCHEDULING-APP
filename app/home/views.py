@@ -63,18 +63,15 @@ def next_month_year(year: int, month: int):
     next_month_date = date(year, month, last_day_of_month) + timedelta(days=2)
     return next_month_date.month, next_month_date.year
 
+today = datetime.today()
+year, month = today.year, today.month
+
 @home.route('/agenda')
 @home.route('/agenda/<year>/<month>')
 @login_required
-def agenda(year='2021', month='6'):
+def agenda(year=year, month=month):
 
     y, m = int(year), int(month)
-
-    today = datetime.today()
-    year, month = today.year, today.month
-
-    # if y == None or m == None:
-    #     return redirect(url_for('home.agenda', year=year, month=month))
 
     prev_month, prev_year = prev_month_year(y, m)
     next_month, next_year = next_month_year(y, m)
@@ -82,10 +79,10 @@ def agenda(year='2021', month='6'):
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
 
-#     monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
-#     # user = Users.query.filter_by(email=current_user.email).first_or_404()
+    monthappts = Appointments.query.filter_by(username == current_user).all()
+    # monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
 
-    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m)
+    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m, monthappts=monthapps)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required

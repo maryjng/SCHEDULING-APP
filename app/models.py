@@ -34,8 +34,3 @@ class Users(UserMixin, db.Model):
 
     def __repr__(self):
         return f"User {self.username}"
-
-    # def __init__(self, username, password, email):
-    #     self.username = username
-    #     self.password = password
-    #     self.email = email

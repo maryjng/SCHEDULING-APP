@@ -21,20 +21,23 @@
 
 <ul class="days">
   {% for day in days %}
-    <li>{{day}}</li>
-
-    {% for appt in monthappts %}
-      {% if appt == day %}
-        <div>{{ appt.appointment }}
-              {{ appt.location }}
-              {{ appt.date }}
-              {{ appt.time }}
-        </div>
-      {% endif %}
-    {% endfor %}
-
+    {% if day == 0 %}
+      <li> </li>
+    {% else %}
+      <li>{{day}}</li>
+    {% endif %}
   {% endfor %}
 </ul>
+
+<div>
+  {% for appt in monthappts %}
+      <div>{{ appt.appointment }}
+            {{ appt.location }}
+            {{ appt.date }}
+            {{ appt.time }}
+      </div>
+  {% endfor %}
+</div>
 
 
 {% endblock %}
