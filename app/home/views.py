@@ -81,8 +81,11 @@ def agenda(year=year, month=month):
 
 #     monthappts = Appointments.query.filter_by(user_id == current_user).all()
     # monthappts = Appointments.query.filter_by(user_id == current_user), (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m)).all()
-
-    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m, monthappts=monthapps)
+    apptDays = []
+        for day in monthappts:
+            apptDays.append(day.Date)
+           
+    return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m, monthappts=monthapps, apptDays=apptDays)
 
 @home.route('/add', methods=['GET', 'POST'])
 @login_required
