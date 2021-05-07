@@ -79,8 +79,8 @@ def agenda(year=year, month=month):
     c = calendar.TextCalendar(calendar.MONDAY)
     days = c.itermonthdays(y,m)
 
-    monthappts = Appointments.query.filter_by(username == current_user).all()
-    # monthappts = Appointments.query.filter(Appointments.username == current_user.username, (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m))
+#     monthappts = Appointments.query.filter_by(user_id == current_user).all()
+    # monthappts = Appointments.query.filter_by(user_id == current_user), (extract('year', Appointments.date) == y), (extract('month', Appointments.date) == m)).all()
 
     return render_template('agenda.html', days=days, prev_year=prev_year, prev_month=prev_month, next_month=next_month, next_year=next_year, today=today, year=y, month=m, monthappts=monthapps)
 
